@@ -7,6 +7,15 @@ in HTML-Dateien, die von der Suche indiziert werden können.
 
 Ablauf
 ======
+Einfach run.sh ausführen::
+
+    $ ./run.sh
+
+Die HTML-Dateien liegen in ``html/``.
+
+
+Manuell
+--------
 1. LDAP-Adressbucheinträge exportieren ::
 
    $ rm entries/*; php fetch-from-ldap.php
@@ -31,3 +40,9 @@ Folgende fehlen:
 
 Vor allem das Fehlen von Stadt und Mobiltelefon sind sehr ärgerlich.
 
+
+Abhängigkeiten
+==============
+- PHP
+- LDAP-Modul für PHP
+- PEAR-Paket Net_LDAP2
