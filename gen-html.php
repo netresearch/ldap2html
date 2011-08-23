@@ -176,7 +176,7 @@ function renderComp($arEntry)
     if (isset($arEntry['postalCode']) && isset($arEntry['street'])) {
         $html .= sprintf(
             ' <a href="%s">map</a>',
-            'http://maps.google.com/?q='
+            'http://maps.google.de/?q='
             . urlencode($arEntry['street'] . ', ' . $arEntry['postalCode'])
         );
     }
