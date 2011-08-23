@@ -142,8 +142,8 @@ function renderValue($value, $field, $arEntry)
         $html = sprintf(
             '<a href="tel:%s">%s</a>',
             str_replace(
-                array('+', ' ', '-'),
-                array('00', '', ''),
+                array('+', ' ', '-', '/'),
+                array('00', '', '', ''),
                 $value
             ),
             htmlspecialchars($value)
