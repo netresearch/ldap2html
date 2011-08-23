@@ -22,27 +22,29 @@ if (Net_LDAP2::isError($ldap)) {
 $count = 0;
 foreach (range('a', 'z') as $a) {
     foreach (range('a', 'z') as $b) {
-        $search = $ldap->search(
-            null,
-            sprintf(
-                '(|(sn=%s%s*)(&(o=%s%s*)(!(sn=*))))',
-                $a, $b,
-                $a, $b
-            )
-        );
-        if (Net_LDAP2::isError($search)) {
-            die('Error searching: ' . $search->getMessage() . "\n");
-        }
-
-        while ($entry = $search->shiftEntry()) {
-            $arEntry = $entry->getValues();
-            $arEntry['dn'] = $entry->dn();
-            file_put_contents(
-                'entries/' . $arEntry['dn'] . '.ser',
-                serialize($arEntry)
+        foreach (array('sn', 'o') as $t) {
+            $search = $ldap->search(
+                null,
+                sprintf(
+                    '(%s=%s%s*)',
+                    $t, $a, $b
+                )
             );
-            if ($debug) { echo '.'; }
-            ++$count;
+            if (Net_LDAP2::isError($search)) {
+                die('Error searching: ' . $search->getMessage() . "\n");
+            }
+
+            while ($entry = $search->shiftEntry()) {
+                $arEntry = $entry->getValues();
+                $arEntry['dn'] = $entry->dn();
+                $arEntry['timestamp'] = time();
+                file_put_contents(
+                    'entries/' . $arEntry['dn'] . '.ser',
+                    serialize($arEntry)
+                );
+                if ($debug) { echo '.'; }
+                ++$count;
+            }
         }
     }
 }
