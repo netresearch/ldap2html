@@ -1,9 +1,9 @@
 <?php
 $map = array(
     'cn' => 'Name',
+    'comp' => array('Adresse', 'renderComp'),
     'mail' => 'E-Mail',
     'telephoneNumber' => 'Telefonnummer',
-    'comp' => array('Adresse', 'renderComp'),
 );
 
 $d = dir(__DIR__ . '/entries');
@@ -190,6 +190,9 @@ function getName($arEntry)
         return $arEntry['cn'];
     } else if (isset($arEntry['sn']) && isset($arEntry['givenName'])) {
         return $arEntry['givenName'] . ' ' . $arEntry['sn'];
+    } else if (isset($arEntry['o'])) {
+        //Firma
+        return $arEntry['o'];
     }
     return $arEntry['dn'];
 }
@@ -200,12 +203,16 @@ function getListName($arEntry)
         return $arEntry['sn'] . ', ' . $arEntry['givenName'];
     } else if (isset($arEntry['cn'])) {
         return $arEntry['cn'];
+    } else if (isset($arEntry['o'])) {
+        //Firma
+        return $arEntry['o'];
     }
     return $arEntry['dn'];
 }
 
 function getFilename($arEntry)
 {
+    $name = '';
     if (isset($arEntry['cn'])) {
         $name = $arEntry['cn'];
     } else if (isset($arEntry['sn']) && isset($arEntry['givenName'])) {
@@ -213,7 +220,10 @@ function getFilename($arEntry)
     }
 
     if (isset($arEntry['o'])) {
-        $name .= '-' . $arEntry['o'];
+        if ($name != '') {
+            $name .= '-';
+        }
+        $name .= $arEntry['o'];
     }
     return str_replace(array(' ', '/'), '-', strtolower($name)) . '.htm';
 }
