@@ -104,14 +104,15 @@ function renderMap($arEntry, $map)
 {
     $html = '';
     foreach ($map as $field => $title) {
+        $value = '';
         if (is_array($title)) {
             list($title, $callback) = $title;
             $value = call_user_func($callback, $arEntry);
-        } else {
-            if (!isset($arEntry[$field])) {
-                continue;
-            }
+        } else if (isset($arEntry[$field])) {
             $value = renderValue($arEntry[$field], $field, $arEntry);
+        }
+        if ($value == '') {
+            continue;
         }
         $html .= sprintf(
             '<tr><th>%s</th><td>%s</td></tr>' . "\n",
@@ -170,6 +171,14 @@ function renderComp($arEntry)
     }
     if (isset($arEntry['l'])) {
         $html .= ' ' . $arEntry['l'];
+    }
+
+    if (isset($arEntry['postalCode']) && isset($arEntry['street'])) {
+        $html .= sprintf(
+            ' <a href="%s">map</a>',
+            'http://maps.google.com/?q='
+            . urlencode($arEntry['street'] . ', ' . $arEntry['postalCode'])
+        );
     }
 
     return $html;
