@@ -8,6 +8,7 @@ $map = array(
 
 $d = dir(__DIR__ . '/entries');
 $n = 0;
+$list = array();
 while (false !== ($name = $d->read())) {
     $fullfile = __DIR__ . '/entries/' . $name;
 
@@ -17,13 +18,41 @@ while (false !== ($name = $d->read())) {
     }
 
     $html = renderHtml($arEntry, $map);
-    $file = 'html/' . getFilename($arEntry);
-    file_put_contents($file, $html);
+    $file = getFilename($arEntry);
+    file_put_contents('html/' . $file, $html);
+
+    $listname = getListName($arEntry);
+    $list[$listname] = sprintf(
+        '<li><a href="%s">%s</a></li>' . "\n",
+        htmlspecialchars($file),
+        htmlspecialchars($listname)
+    );
 
     if (++$n > 5) {
         //break;
     }
 }
+
+ksort($list);
+$listhtml = implode('', $list);
+
+file_put_contents(
+    'html/index.htm',
+    <<<HTM
+<?xml version="1.0" encoding="utf-8"?>
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>GW-Adressbuch</title>
+ </head>
+ <body>
+  <ul>
+   $listhtml
+  </ul>
+ </body>
+</html>
+HTM
+);
 
 
 function renderHtml($arEntry, $map)
@@ -35,19 +64,31 @@ function renderHtml($arEntry, $map)
 <?xml version="1.0" encoding="utf-8"?>
 <html>
  <head>
-  <title>$name</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>$name - Adressbuch</title>
   <style type="text/css">
     table th {
         vertical-align: top;
         text-align: left;
     }
+    table {
+        border-collapse: separate;
+        border-spacing: 0.5em 1em;
+    }
     pre {
         background-color: #EEE;
         font-size: 8px;
     }
+    div.back {
+        background-color: #EEE;
+        font-size: 10px;
+    }
   </style>
  </head>
  <body>
+  <div class="back">
+   <a href="index.htm">index</a>
+  </div>
   <table>
    <tbody>
   $tbody
@@ -70,7 +111,7 @@ function renderMap($arEntry, $map)
             if (!isset($arEntry[$field])) {
                 continue;
             }
-            $value = renderValue($arEntry[$field], $field);
+            $value = renderValue($arEntry[$field], $field, $arEntry);
         }
         $html .= sprintf(
             '<tr><th>%s</th><td>%s</td></tr>' . "\n",
@@ -82,18 +123,18 @@ function renderMap($arEntry, $map)
     return $html;
 }
 
-function renderValue($value, $field)
+function renderValue($value, $field, $arEntry)
 {
     if (is_array($value)) {
         $htmls = array();
         foreach ($value as $single) {
-            $htmls[] = renderValue($single, $field);
+            $htmls[] = renderValue($single, $field, $arEntry);
         }
         $html = implode('<br/>', $htmls);
     } else if ($field == 'mail') {
         $html = sprintf(
             '<a href="mailto:%s">%s</a>',
-            htmlspecialchars($value),
+            htmlspecialchars(getName($arEntry) . ' <' . $value . '>'),
             htmlspecialchars($value)
         );
     } else {
@@ -130,6 +171,16 @@ function getName($arEntry)
         return $arEntry['cn'];
     } else if (isset($arEntry['sn']) && isset($arEntry['givenName'])) {
         return $arEntry['givenName'] . ' ' . $arEntry['sn'];
+    }
+    return $arEntry['dn'];
+}
+
+function getListName($arEntry)
+{
+    if (isset($arEntry['sn']) && isset($arEntry['givenName'])) {
+        return $arEntry['sn'] . ', ' . $arEntry['givenName'];
+    } else if (isset($arEntry['cn'])) {
+        return $arEntry['cn'];
     }
     return $arEntry['dn'];
 }
