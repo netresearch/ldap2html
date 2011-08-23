@@ -4,6 +4,11 @@ require_once 'Net/LDAP2.php';
 //ldapsearch -h ldap.nr -x -LLL -b 'dc=netresearch,dc=de' '(o=Otto*)'
 //ldapsearch -h ldap.nr -x -LLL -b 'dc=netresearch,dc=de' '(|(sn=Otto*)(&(!(sn=*))(o=Otto*)))'
 
+$debug = true;
+if (in_array('--quiet', $argv)) {
+    $debug = false;
+}
+
 $ldapcfg = array(
     'host' => 'ldap.nr',
     'basedn' => 'dc=netresearch,dc=de'
@@ -36,10 +41,12 @@ foreach (range('a', 'z') as $a) {
                 'entries/' . $arEntry['dn'] . '.ser',
                 serialize($arEntry)
             );
-            echo '.';
+            if ($debug) { echo '.'; }
             ++$count;
         }
     }
 }
-echo "\n$count entries saved\n";
+if ($debug) {
+    echo "\n$count entries saved\n";
+}
 ?>
