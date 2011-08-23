@@ -1,5 +1,8 @@
 <?php
 require_once 'Net/LDAP2.php';
+//ldapsearch -h ldap.nr -x -LLL -b 'dc=netresearch,dc=de' '(sn=Ab*)'
+//ldapsearch -h ldap.nr -x -LLL -b 'dc=netresearch,dc=de' '(o=Otto*)'
+//ldapsearch -h ldap.nr -x -LLL -b 'dc=netresearch,dc=de' '(|(sn=Otto*)(&(!(sn=*))(o=Otto*)))'
 
 $ldapcfg = array(
     'host' => 'ldap.nr',
@@ -15,7 +18,12 @@ $count = 0;
 foreach (range('a', 'z') as $a) {
     foreach (range('a', 'z') as $b) {
         $search = $ldap->search(
-            null, sprintf('(sn=%s%s*)', $a, $b)
+            null,
+            sprintf(
+                '(|(sn=%s%s*)(&(o=%s%s*)(!(sn=*))))',
+                $a, $b,
+                $a, $b
+            )
         );
         if (Net_LDAP2::isError($search)) {
             die('Error searching: ' . $search->getMessage() . "\n");
