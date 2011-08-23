@@ -108,6 +108,9 @@ function renderComp($arEntry)
     if (isset($arEntry['o'])) {
         $html .= $arEntry['o'] . '<br/>';
     }
+    if (isset($arEntry['ou'])) {
+        $html .= 'Abteilung ' . $arEntry['ou'] . '<br/>';
+    }
     if (isset($arEntry['street'])) {
         $html .= $arEntry['street'] . '<br/>';
     }
