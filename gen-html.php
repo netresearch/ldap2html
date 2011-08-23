@@ -137,6 +137,16 @@ function renderValue($value, $field, $arEntry)
             htmlspecialchars(getName($arEntry) . ' <' . $value . '>'),
             htmlspecialchars($value)
         );
+    } else if ($field == 'telephoneNumber') {
+        $html = sprintf(
+            '<a href="tel:%s">%s</a>',
+            str_replace(
+                array('+', ' ', '-'),
+                array('00', '', ''),
+                $value
+            ),
+            htmlspecialchars($value)
+        );
     } else {
         $html = htmlspecialchars($value);
     }
