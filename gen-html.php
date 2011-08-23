@@ -35,6 +35,7 @@ while (false !== ($name = $d->read())) {
 
 ksort($list);
 $listhtml = implode('', $list);
+$date = date('c');
 
 file_put_contents(
     'html/index.htm',
@@ -49,6 +50,7 @@ file_put_contents(
   <ul>
    $listhtml
   </ul>
+  <p>Generiert: $date</p>
  </body>
 </html>
 HTM
@@ -60,6 +62,7 @@ function renderHtml($arEntry, $map)
     $name = getName($arEntry);
     $tbody = renderMap($arEntry, $map);
     $entrydump = htmlspecialchars(var_export($arEntry, true));
+    $date = date('c', $arEntry['timestamp']);
     return <<<HTM
 <?xml version="1.0" encoding="utf-8"?>
 <html>
@@ -95,6 +98,7 @@ function renderHtml($arEntry, $map)
    </tbody>
   </table>
   <pre>$entrydump</pre>
+  <p class="update">Exportdatum: $date</p>
  </body>
 </html>
 HTM;
