@@ -151,7 +151,7 @@ function renderValue($value, $field, $arEntry)
         $html = sprintf('
             <a href="tel:%s"> %s </a>
             <a href="http://asterisk.nr/gemeinschaft/srv/pb-dial.php?n=0%s">
-                <img alt="wählen" src="http://asterisk.nr/gemeinschaft/crystal-svg/16/app/yast_PhoneTTOffhook.png">
+                <img alt="wählen" src="http://asterisk.nr/gemeinschaft/crystal-svg/16/app/yast_PhoneTTOffhook.png" />
             </a>
             ', $number, htmlspecialchars($value), $number
         );
