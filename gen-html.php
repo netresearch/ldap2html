@@ -143,14 +143,17 @@ function renderValue($value, $field, $arEntry)
             htmlspecialchars($value)
         );
     } else if ($field == 'telephoneNumber') {
-        $html = sprintf(
-            '<a href="tel:%s">%s</a>',
-            str_replace(
-                array('+', ' ', '-', '/'),
-                array('00', '', '', ''),
-                $value
-            ),
-            htmlspecialchars($value)
+        $number = str_replace(
+            array('+', ' ', '-', '/'),
+            array('00', '', '', ''),
+            $value
+        );
+        $html = sprintf('
+            <a href="tel:%s"> %s </a>
+            <a href="http://asterisk.nr/gemeinschaft/srv/pb-dial.php?n=0%s">
+                <img alt="wählen" src="/gemeinschaft/crystal-svg/16/app/yast_PhoneTTOffhook.png">
+            </a>
+            ', $number, htmlspecialchars($value), $number
         );
     } else {
         $html = htmlspecialchars($value);
