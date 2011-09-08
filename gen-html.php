@@ -165,19 +165,19 @@ function renderComp($arEntry)
 {
     $html = '';
     if (isset($arEntry['o'])) {
-        $html .= $arEntry['o'] . '<br/>';
+        $html .= htmlspecialchars($arEntry['o']) . '<br/>';
     }
     if (isset($arEntry['ou'])) {
-        $html .= 'Abteilung ' . $arEntry['ou'] . '<br/>';
+        $html .= 'Abteilung ' . htmlspecialchars($arEntry['ou']) . '<br/>';
     }
     if (isset($arEntry['street'])) {
-        $html .= $arEntry['street'] . '<br/>';
+        $html .= htmlspecialchars($arEntry['street']) . '<br/>';
     }
     if (isset($arEntry['postalCode'])) {
-        $html .= $arEntry['postalCode'];
+        $html .= htmlspecialchars($arEntry['postalCode']);
     }
     if (isset($arEntry['l'])) {
-        $html .= ' ' . $arEntry['l'];
+        $html .= ' ' . htmlspecialchars($arEntry['l']);
     }
 
     if (isset($arEntry['postalCode']) && isset($arEntry['street'])) {
