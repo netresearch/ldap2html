@@ -41,6 +41,7 @@ file_put_contents(
     'html/index.htm',
     <<<HTM
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml-transitional.dtd">
 <html>
  <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
