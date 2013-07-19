@@ -24,7 +24,7 @@ while (false !== ($name = $d->read())) {
     $listname = getListName($arEntry);
     $list[$listname] = sprintf(
         '<li><a href="%s">%s</a></li>' . "\n",
-        htmlspecialchars($file),
+        urlencode($file),
         htmlspecialchars($listname)
     );
 
@@ -232,7 +232,11 @@ function getFilename($arEntry)
         }
         $name .= $arEntry['o'];
     }
-    return str_replace(array(' ', '/'), '-', strtolower($name)) . '.htm';
+    return str_replace(
+        array(' ', '/', '"', '\''),
+        array('-', '-', '', ''),
+        strtolower($name)
+    ) . '.htm';
 }
 
 ?>
