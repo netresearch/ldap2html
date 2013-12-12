@@ -4,11 +4,11 @@ if [ ! -d entries ]; then
 else
     rm entries/*
 fi
-php fetch-from-ldap.php --quiet
+php fetch-from-ldap.php --quiet || exit $?
 
 if [ ! -d html ]; then
     mkdir html
 else
     rm html/*
 fi
-php gen-html.php
+php gen-html.php || exit $?

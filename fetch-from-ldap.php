@@ -16,7 +16,8 @@ $ldapcfg = array(
 
 $ldap = Net_LDAP2::connect($ldapcfg);
 if (Net_LDAP2::isError($ldap)) {
-    die('Could not connect to LDAP-server: ' . $ldap->getMessage() . "\n");
+    echo 'Could not connect to LDAP-server: ' . $ldap->getMessage() . "\n";
+    exit(1);
 }
 
 $count = 0;
@@ -31,10 +32,15 @@ foreach (range('a', 'z') as $a) {
                 )
             );
             if (Net_LDAP2::isError($search)) {
-                die('Error searching: ' . $search->getMessage() . "\n");
+                echo 'Error searching: ' . $search->getMessage() . "\n";
+                exit(2);
             }
 
             while ($entry = $search->shiftEntry()) {
+                if (Net_LDAP2::isError($entry)) {
+                    echo 'Error searching: ' . $entry->getMessage() . "\n";
+                    exit(3);
+                }
                 $arEntry = $entry->getValues();
                 $arEntry['dn'] = $entry->dn();
                 $arEntry['timestamp'] = time();
