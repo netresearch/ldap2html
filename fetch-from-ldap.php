@@ -55,4 +55,8 @@ foreach (range('a', 'z') as $a) {
 if ($debug) {
     echo "\n$count entries saved\n";
 }
+if ($count == 0) {
+    echo "\nNo entries found\n";
+    exit(4);
+}
 ?>
