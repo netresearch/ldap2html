@@ -1,18 +1,11 @@
 <?php
 require_once 'Net/LDAP2.php';
-//ldapsearch -h ldap.nr -x -LLL -b 'dc=netresearch,dc=de' '(sn=Ab*)'
-//ldapsearch -h ldap.nr -x -LLL -b 'dc=netresearch,dc=de' '(o=Otto*)'
-//ldapsearch -h ldap.nr -x -LLL -b 'dc=netresearch,dc=de' '(|(sn=Otto*)(&(!(sn=*))(o=Otto*)))'
+require_once __DIR__  . '/data/config.php';
 
 $debug = true;
 if (in_array('--quiet', $argv)) {
     $debug = false;
 }
-
-$ldapcfg = array(
-    'host' => 'ldap.nr',
-    'basedn' => 'dc=netresearch,dc=de'
-);
 
 $ldap = Net_LDAP2::connect($ldapcfg);
 if (Net_LDAP2::isError($ldap)) {

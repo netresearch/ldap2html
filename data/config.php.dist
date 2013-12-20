@@ -1,0 +1,6 @@
+<?php
+$ldapcfg = array(
+    'host' => 'FIXME',
+    'basedn' => 'dc=FIXME,dc=de'
+);
+?>
