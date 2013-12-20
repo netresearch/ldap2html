@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 require_once 'Net/LDAP2.php';
 require_once __DIR__  . '/data/config.php';
