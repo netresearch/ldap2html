@@ -30,6 +30,10 @@ foreach (range('a', 'z') as $a) {
                 exit(2);
             }
 
+            if ($search->count() == 0) {
+                continue;
+            }
+
             while ($entry = $search->shiftEntry()) {
                 if (Net_LDAP2::isError($entry)) {
                     echo 'Error searching: ' . $entry->getMessage() . "\n";
